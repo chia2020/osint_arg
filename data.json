@@ -1,0 +1,622 @@
+{
+  "site": {
+    "portfolio_base": "https://portfolio.example",
+    "announcements_url": "#announcements-url-here"
+  },
+  "directory": {
+    "organization": "ORION Research Systems",
+    "last_updated": "2026-10-09"
+  },
+  "collaborators": [
+    {
+      "id": "c01",
+      "name": "Navya Mulay",
+      "role": "Senior Researcher",
+      "affiliation": "BITS",
+      "projects": [
+        "MIRROR",
+        "ACM-W x CRUx"
+      ],
+      "email": "navya.mulay@bits-research.example",
+      "bio": "Works on anonymization evaluation for the MIRROR survey pipeline.",
+      "handles": [],
+      "orion_id": "0000-0002-4417-0001",
+      "location": "Pilani, India",
+      "interests": [
+        "Data anonymization",
+        "Privacy evaluation",
+        "Survey methods"
+      ],
+      "publications": 9,
+      "citations": 142,
+      "h_index": 5,
+      "joined": "2024",
+      "department": "Dept. of Computer Science",
+      "followers": 214,
+      "following": 87,
+      "verified": true,
+      "publications_list": [
+        {
+          "title": "Quasi-identifier exposure in survey anonymization",
+          "venue": "Student Research Symposium",
+          "year": 2026
+        },
+        {
+          "title": "Evaluating k-anonymity on small campus datasets",
+          "venue": "Privacy Workshop",
+          "year": 2025
+        }
+      ],
+      "recent_activity": "Updated research notes on 13 Oct 2026",
+      "portfolio_path": "/navya-mulay"
+    },
+    {
+      "id": "c02",
+      "name": "Prof. Archisman Joshi",
+      "role": "Faculty Supervisor",
+      "affiliation": "BITS",
+      "projects": [
+        "MIRROR"
+      ],
+      "email": "a.joshi@bits-research.example",
+      "bio": "Supervises MIRROR methodology review and publication sign-off.",
+      "handles": [],
+      "orion_id": "0000-0001-9082-0002",
+      "location": "Pilani, India",
+      "interests": [
+        "Differential privacy",
+        "Research ethics",
+        "Statistical disclosure control"
+      ],
+      "publications": 64,
+      "citations": 2310,
+      "h_index": 22,
+      "joined": "2012",
+      "department": "Dept. of Computer Science",
+      "followers": 1840,
+      "following": 132,
+      "verified": true,
+      "publications_list": [
+        {
+          "title": "Practical disclosure control for institutional surveys",
+          "venue": "Journal of Data Privacy",
+          "year": 2025
+        },
+        {
+          "title": "Ethics review for student-linked datasets",
+          "venue": "Research Ethics Review",
+          "year": 2024
+        }
+      ],
+      "recent_activity": "Commented on a methodology draft on 13 Oct 2026",
+      "portfolio_path": "/archisman-joshi"
+    },
+    {
+      "id": "c03",
+      "name": "Rohan Deshpande",
+      "role": "Data Governance Lead",
+      "affiliation": "ORION Research Systems",
+      "projects": [
+        "MIRROR",
+        "Verification Program"
+      ],
+      "email": "r.deshpande@orion-research.example",
+      "bio": "Coordinates data handling policy and review rotations for partner projects.",
+      "handles": [
+        "orion-review-17"
+      ],
+      "orion_id": "0000-0003-5521-0003",
+      "location": "Pune, India",
+      "interests": [
+        "Data governance",
+        "Policy compliance",
+        "Access review"
+      ],
+      "publications": 21,
+      "citations": 487,
+      "h_index": 9,
+      "joined": "2019",
+      "department": "Data Governance Office",
+      "followers": 402,
+      "following": 156,
+      "verified": true,
+      "publications_list": [
+        {
+          "title": "Access review models for partner research data",
+          "venue": "Applied Governance Conference",
+          "year": 2025
+        }
+      ],
+      "recent_activity": "Updated review rotation on 2 Oct 2026",
+      "portfolio_path": "/rohan-deshpande"
+    },
+    {
+      "id": "c04",
+      "name": "Meera Kulkarni",
+      "role": "Systems Engineer",
+      "affiliation": "ORION Research Systems",
+      "projects": [
+        "MIRROR",
+        "Verification Program"
+      ],
+      "email": "m.kulkarni@orion-research.example",
+      "bio": "Maintains access tooling and audit configuration for the review group.",
+      "handles": [
+        "orion-review-17",
+        "orion-review-09"
+      ],
+      "orion_id": "0000-0002-7730-0004",
+      "location": "Pune, India",
+      "interests": [
+        "Access tooling",
+        "Audit systems",
+        "Identity management"
+      ],
+      "publications": 14,
+      "citations": 265,
+      "h_index": 7,
+      "joined": "2020",
+      "department": "Platform Engineering",
+      "followers": 288,
+      "following": 121,
+      "verified": true,
+      "publications_list": [
+        {
+          "title": "Audit trails for shared credentials in research platforms",
+          "venue": "Systems Security Workshop",
+          "year": 2024
+        }
+      ],
+      "recent_activity": "Updated profile on 28 Sep 2026",
+      "portfolio_path": "/meera-kulkarni"
+    },
+    {
+      "id": "c05",
+      "name": "Tarun Bhatt",
+      "role": "Pipeline Engineer",
+      "affiliation": "ORION Research Systems",
+      "projects": [
+        "MIRROR",
+        "Relay Services"
+      ],
+      "email": "t.bhatt@orion-research.example",
+      "bio": "Builds and monitors data transfer jobs between partner systems.",
+      "handles": [
+        "orion-review-17"
+      ],
+      "orion_id": "0000-0001-3346-0005",
+      "location": "Bengaluru, India",
+      "interests": [
+        "Data pipelines",
+        "Transfer services",
+        "Observability"
+      ],
+      "publications": 11,
+      "citations": 198,
+      "h_index": 6,
+      "joined": "2021",
+      "department": "Data Platform",
+      "followers": 173,
+      "following": 94,
+      "verified": true,
+      "publications_list": [
+        {
+          "title": "Reliable batch transfer between partner systems",
+          "venue": "Data Engineering Summit",
+          "year": 2025
+        }
+      ],
+      "recent_activity": "Added a project on 21 Sep 2026",
+      "portfolio_path": "/tarun-bhatt"
+    },
+    {
+      "id": "c06",
+      "name": "Ishita Rao",
+      "role": "Student Liaison",
+      "affiliation": "ACM-W x CRUx",
+      "projects": [
+        "ACM-W x CRUx"
+      ],
+      "email": "i.rao@clubs-collab.example",
+      "bio": "Coordinates the joint club project with the research group.",
+      "handles": [],
+      "orion_id": "0000-0002-1198-0006",
+      "location": "Pilani, India",
+      "interests": [
+        "Student outreach",
+        "Community projects",
+        "Open source"
+      ],
+      "publications": 3,
+      "citations": 18,
+      "h_index": 2,
+      "joined": "2025",
+      "department": "ACM-W x CRUx",
+      "followers": 96,
+      "following": 210,
+      "verified": true,
+      "publications_list": [
+        {
+          "title": "Student-led open source in campus research groups",
+          "venue": "Student Tech Review",
+          "year": 2026
+        }
+      ],
+      "recent_activity": "Posted a project update on 10 Oct 2026",
+      "portfolio_path": "/ishita-rao"
+    }
+  ],
+  "shared_handles": [
+    {
+      "handle": "orion-review-17",
+      "label": "Shared verification handle",
+      "owner_team": "ORION Verification Program",
+      "status": "Active",
+      "registered": "2026-08-04",
+      "scope": "Read and review access to partner research repositories and notes.",
+      "usage": "Credentials are held by the review group and rotated between members. Individual use is not recorded against a named person."
+    },
+    {
+      "handle": "orion-review-09",
+      "label": "Shared verification handle",
+      "owner_team": "ORION Verification Program",
+      "status": "Retired",
+      "registered": "2026-02-11",
+      "scope": "Review access for an earlier partner project.",
+      "usage": "Retired after the previous review cycle."
+    }
+  ],
+  "active_projects": [
+    {
+      "name": "MIRROR",
+      "description": "Survey data anonymization and research archive.",
+      "members": 5
+    },
+    {
+      "name": "Verification Program",
+      "description": "Review workflows for partner research.",
+      "members": 2
+    },
+    {
+      "name": "Relay Services",
+      "description": "Transfer services between partner systems.",
+      "members": 1
+    },
+    {
+      "name": "ACM-W x CRUx",
+      "description": "Joint student club project.",
+      "members": 2
+    }
+  ],
+  "home": {
+    "hero": {
+      "title": "Collaborate on research across ORION and campus partners",
+      "subtitle": "Find researchers, browse the Research Project Bank and follow updates from partner research groups."
+    },
+    "banner": {
+      "text": "The Project Bank for First Semester 2026–27 is open for applications.",
+      "cta": "Browse projects"
+    },
+    "spotlight_ids": [
+      "c01",
+      "c04",
+      "c06"
+    ],
+    "featured_project_ids": [
+      "p01",
+      "p05",
+      "p08"
+    ],
+    "updates": [
+      {
+        "date": "2026-10-08",
+        "tag": "MIRROR",
+        "title": "Methodology review cycle opens",
+        "body": "Partner groups can submit comments on the anonymization methodology notes until the end of the month."
+      },
+      {
+        "date": "2026-10-05",
+        "tag": "Verification Program",
+        "title": "Shared review accounts now documented",
+        "body": "Review group handles and their scope are listed in the directory sidebar."
+      },
+      {
+        "date": "2026-10-02",
+        "tag": "ACM-W x CRUx",
+        "title": "Joint session recap",
+        "body": "Notes and next steps from the club collaboration session are available to project members."
+      },
+      {
+        "date": "2026-09-26",
+        "tag": "Directory",
+        "title": "Researcher profiles refreshed",
+        "body": "Profiles now show affiliation, interests, latest publication and portfolio links."
+      },
+      {
+        "date": "2026-09-18",
+        "tag": "Projects",
+        "title": "Call for student liaisons",
+        "body": "Club representatives can register as liaisons for partner projects this semester."
+      },
+      {
+        "date": "2026-09-10",
+        "tag": "Seminar",
+        "title": "Recording: practical disclosure control",
+        "body": "The seminar recording and slides are now available in the shared library."
+      }
+    ],
+    "events": [
+      {
+        "date": "2026-10-16",
+        "title": "Research seminar: disclosure control in practice",
+        "place": "Seminar Hall 2",
+        "time": "4:00 PM"
+      },
+      {
+        "date": "2026-10-21",
+        "title": "Project bank Q&A for students",
+        "place": "Online",
+        "time": "6:30 PM"
+      },
+      {
+        "date": "2026-10-28",
+        "title": "Library workshop: citing datasets",
+        "place": "Central Library",
+        "time": "3:00 PM"
+      }
+    ]
+  },
+  "projects_title": "Project Bank – First Semester 2026-27",
+  "projects": [
+    {
+      "id": "p01",
+      "department": "Computer Science",
+      "instructor": "Prof. Archisman Joshi",
+      "project_type": "Lab Project",
+      "title": "Anonymization quality metrics for survey datasets",
+      "description": "Design and compare metrics that describe how well survey records are anonymized, using synthetic datasets. Students will implement the metrics and document their limits.",
+      "prerequisites": "Basic statistics; Python",
+      "tags": [
+        "Privacy",
+        "Survey data",
+        "Metrics"
+      ],
+      "status": "Open",
+      "seats": 2,
+      "semester": "First Semester 2026-27",
+      "updated": "2026-10-06",
+      "lead_id": "c02"
+    },
+    {
+      "id": "p02",
+      "department": "Data Governance",
+      "instructor": "Rohan Deshpande",
+      "project_type": "Design Project",
+      "title": "Verification workflows for partner research data",
+      "description": "Map how partner projects request, review and sign off on data access, and propose a lightweight checklist for reviewers.",
+      "prerequisites": "Interest in policy and process design",
+      "tags": [
+        "Governance",
+        "Access review"
+      ],
+      "status": "Open",
+      "seats": 3,
+      "semester": "First Semester 2026-27",
+      "updated": "2026-10-02",
+      "lead_id": "c03"
+    },
+    {
+      "id": "p03",
+      "department": "Platform Engineering",
+      "instructor": "Meera Kulkarni",
+      "project_type": "Design Project",
+      "title": "Audit trail design for shared research accounts",
+      "description": "Prototype an audit log format that records activity on team-held accounts and makes review simpler.",
+      "prerequisites": "Backend basics; JSON",
+      "tags": [
+        "Audit",
+        "Identity",
+        "Logging"
+      ],
+      "status": "Open",
+      "seats": 2,
+      "semester": "First Semester 2026-27",
+      "updated": "2026-09-28",
+      "lead_id": "c04"
+    },
+    {
+      "id": "p04",
+      "department": "Data Platform",
+      "instructor": "Tarun Bhatt",
+      "project_type": "Lab Project",
+      "title": "Reliable batch transfer between partner systems",
+      "description": "Build and test a transfer job with retries, checksums and a manifest, using only generated sample data.",
+      "prerequisites": "Python or Go; Linux basics",
+      "tags": [
+        "Pipelines",
+        "Transfer",
+        "Observability"
+      ],
+      "status": "Ongoing",
+      "seats": 1,
+      "semester": "FY 2026-27",
+      "updated": "2026-09-21",
+      "lead_id": "c05"
+    },
+    {
+      "id": "p05",
+      "department": "ACM-W x CRUx",
+      "instructor": "Dr. Kavita Menon",
+      "project_type": "Special Project",
+      "title": "Open-source toolkit for student research groups",
+      "description": "A joint club project to build reusable templates, notes tooling and documentation for student-led research.",
+      "prerequisites": "Good written communication; Git",
+      "tags": [
+        "Open source",
+        "Community",
+        "Tooling"
+      ],
+      "status": "Open",
+      "seats": 4,
+      "semester": "FY 2026-27",
+      "updated": "2026-10-10"
+    },
+    {
+      "id": "p06",
+      "department": "Computer Science",
+      "instructor": "Dr. Kavita Menon",
+      "project_type": "Special Project",
+      "title": "Privacy-preserving survey analytics",
+      "description": "Explore aggregation and noise techniques for releasing campus survey summaries without exposing individuals.",
+      "prerequisites": "Probability; one ML or statistics course",
+      "tags": [
+        "Privacy",
+        "Analytics"
+      ],
+      "status": "Open",
+      "seats": 2,
+      "semester": "First Semester 2026-27",
+      "updated": "2026-10-01"
+    },
+    {
+      "id": "p07",
+      "department": "Electronics",
+      "instructor": "Dr. Sandeep Rao",
+      "project_type": "Design Project",
+      "title": "Explainable anomaly detection for lab sensor streams",
+      "description": "Compare simple detectors on time-series data from lab sensors and produce explanations a technician can act on.",
+      "prerequisites": "Signals basics; Python",
+      "tags": [
+        "Time series",
+        "Anomaly detection"
+      ],
+      "status": "Open",
+      "seats": 3,
+      "semester": "First Semester 2026-27",
+      "updated": "2026-09-30"
+    },
+    {
+      "id": "p08",
+      "department": "Humanities and Social Sciences",
+      "instructor": "Dr. Leena Pillai",
+      "project_type": "Study Project",
+      "title": "Ethics and consent in student-linked research datasets",
+      "description": "A review of consent practices, data minimisation and disclosure in research that uses student information.",
+      "prerequisites": "Interest in research ethics",
+      "tags": [
+        "Ethics",
+        "Consent",
+        "Review"
+      ],
+      "status": "Open",
+      "seats": 3,
+      "semester": "First Semester 2026-27",
+      "updated": "2026-10-03"
+    },
+    {
+      "id": "p09",
+      "department": "Computer Science",
+      "instructor": "Dr. Kavita Menon",
+      "project_type": "Lab Project",
+      "title": "Knowledge graph of research collaborations",
+      "description": "Model people, projects and publications as a graph and build simple queries for finding collaborators.",
+      "prerequisites": "Python; basic graph concepts",
+      "tags": [
+        "Graphs",
+        "Search"
+      ],
+      "status": "Open",
+      "seats": 2,
+      "semester": "First Semester 2026-27",
+      "updated": "2026-09-27"
+    },
+    {
+      "id": "p10",
+      "department": "Electronics",
+      "instructor": "Dr. Sandeep Rao",
+      "project_type": "Lab Project",
+      "title": "Low-power sensor nodes for campus air quality",
+      "description": "Assemble and calibrate low-power nodes, then collect and visualise readings across campus.",
+      "prerequisites": "Basic electronics; microcontrollers",
+      "tags": [
+        "IoT",
+        "Sensors"
+      ],
+      "status": "Ongoing",
+      "seats": 1,
+      "semester": "First Semester 2026-27",
+      "updated": "2026-09-14"
+    },
+    {
+      "id": "p11",
+      "department": "Mathematics",
+      "instructor": "Prof. Archisman Joshi",
+      "project_type": "Study Project",
+      "title": "Statistical disclosure control: a literature review",
+      "description": "Prepare a concise review of disclosure control methods, covering their assumptions and typical failure cases.",
+      "prerequisites": "Interest in literature review and writing",
+      "tags": [
+        "Review",
+        "Privacy"
+      ],
+      "status": "Open",
+      "seats": 2,
+      "semester": "First Semester 2026-27",
+      "updated": "2026-10-04",
+      "lead_id": "c02"
+    },
+    {
+      "id": "p12",
+      "department": "Design",
+      "instructor": "Dr. Leena Pillai",
+      "project_type": "Design Project",
+      "title": "Dashboard design for research transparency",
+      "description": "Design clear, honest dashboards that show what a research system collects, retains and shares.",
+      "prerequisites": "UI design basics; HTML/CSS",
+      "tags": [
+        "UX",
+        "Dashboards"
+      ],
+      "status": "Open",
+      "seats": 2,
+      "semester": "First Semester 2026-27",
+      "updated": "2026-10-05"
+    },
+    {
+      "id": "p13",
+      "department": "Computer Science",
+      "instructor": "Prof. Archisman Joshi",
+      "project_type": "Special Project",
+      "title": "Differentially private release of campus survey summaries",
+      "description": "Implement and evaluate differential privacy mechanisms on a synthetic survey dataset.",
+      "prerequisites": "Probability; Python",
+      "tags": [
+        "Privacy",
+        "Differential privacy"
+      ],
+      "status": "Closed",
+      "seats": 0,
+      "semester": "First Semester 2026-27",
+      "updated": "2026-08-30",
+      "lead_id": "c02"
+    },
+    {
+      "id": "p14",
+      "department": "Data Platform",
+      "instructor": "Rohan Deshpande",
+      "project_type": "Design Project",
+      "title": "Data catalog for partner research archives",
+      "description": "Prototype a searchable catalog describing datasets, owners and retention rules for research archives.",
+      "prerequisites": "Databases; web basics",
+      "tags": [
+        "Catalog",
+        "Metadata"
+      ],
+      "status": "Ongoing",
+      "seats": 1,
+      "semester": "First Semester 2026-27",
+      "updated": "2026-09-12",
+      "lead_id": "c03"
+    }
+  ]
+}
