@@ -1,51 +1,208 @@
-<!DOCTYPE html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Project Bank | ORION Scholar</title>
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css"></head>
-<body data-page="projects">
-<div id="top"></div><script src="site.js"></script>
-<main class="wrap">
-  <div class="bar"><h1 id="title">Our Research Projects</h1><span class="count" id="count"></span>
-    <select id="sort" aria-label="Sort by"><option value="upd">Sort: Recently updated</option><option value="title">Sort: Title</option><option value="seats">Sort: Seats available</option></select></div>
-  <div class="pbank">
-    <aside class="card side" aria-label="Filters">
-      <fieldset id="f-dep"><h3>Department</h3></fieldset><fieldset id="f-typ"><h3>Project type</h3></fieldset><fieldset id="f-st"><h3>Status</h3></fieldset>
-      <button class="reset" id="reset" type="button">Clear all filters</button>
-    </aside>
-    <div><div id="list"></div><div class="card empty" id="empty" hidden>No projects match your filters.</div><div class="card error" id="error" hidden></div></div>
-  </div>
-</main>
-<script>
-loadData().then(function(D){
-  var all=D.projects,cs=D.collaborators,q=document.getElementById('q'),sel={dep:{},typ:{},st:{}};
-  document.getElementById('title').textContent=D.projects_title;
-  q.value=new URLSearchParams(location.search).get('q')||'';
-  function active(o){return Object.keys(o).filter(function(k){return o[k]})}
-  function build(id,key,field){var fs=document.getElementById(id),n={};all.forEach(function(p){n[p[field]||'Other']=(n[p[field]||'Other']||0)+1});
-    Object.keys(n).sort().forEach(function(v){var l=el('label'),cb=el('input');cb.type='checkbox';cb.onchange=function(){sel[key][v]=cb.checked;render()};l.appendChild(cb);l.appendChild(el('span','',v));l.appendChild(el('span','n',n[v]));fs.appendChild(l)})}
-  build('f-dep','dep','department');build('f-typ','typ','project_type');build('f-st','st','status');
-  function render(){
-    var t=(q?q.value:'').trim().toLowerCase(),d=active(sel.dep),ty=active(sel.typ),s=active(sel.st);
-    var l=all.filter(function(p){var h=[p.title,p.description,p.instructor,p.department,p.prerequisites].concat(p.tags||[]).join(' ').toLowerCase();
-      return (!t||h.indexOf(t)>-1)&&(!d.length||d.indexOf(p.department)>-1)&&(!ty.length||ty.indexOf(p.project_type)>-1)&&(!s.length||s.indexOf(p.status)>-1)});
-    var o=document.getElementById('sort').value;
-    l.sort(function(a,b){return o==='title'?a.title.localeCompare(b.title):o==='seats'?b.seats-a.seats:b.updated.localeCompare(a.updated)});
-    var box=document.getElementById('list');box.textContent='';
-    l.forEach(function(p){
-      var c=el('article','card pc');c.appendChild(el('h2','',p.title));
-      var m=el('div','meta');m.appendChild(el('span','st '+p.status,p.status));m.appendChild(el('span','',p.department));m.appendChild(el('span','',p.project_type));m.appendChild(el('span','',p.semester));c.appendChild(m);
-      c.appendChild(el('p','',p.description));
-      var dl=el('dl');dl.appendChild(el('dt','','Instructor'));var dd=el('dd');
-      var lead=p.lead_id&&cs.filter(function(x){return x.id===p.lead_id})[0];
-      if(lead&&lead.portfolio_url){var a=el('a','',p.instructor);a.href=lead.portfolio_url;a.target='_blank';a.rel='noopener';dd.appendChild(a)}else dd.textContent=p.instructor;
-      dl.appendChild(dd);dl.appendChild(el('dt','','Prerequisites'));dl.appendChild(el('dd','',p.prerequisites||'None'));
-      var tg=el('dd');p.tags.forEach(function(x){tg.appendChild(el('span','chip',x));tg.appendChild(document.createTextNode(' '))});dl.appendChild(el('dt','','Topics'));dl.appendChild(tg);c.appendChild(dl);
-      var f=el('div','foot');var b=el('button','btn p',p.status==='Closed'?'Closed':'Apply');b.type='button';if(p.status==='Closed')b.disabled=true;else b.onclick=function(){b.textContent='Applied';b.disabled=true};
-      f.appendChild(b);f.appendChild(el('span','',(p.seats>0?p.seats+' seat'+(p.seats===1?'':'s')+' left':'No seats left')+' · Updated '+fmtDate(p.updated)));c.appendChild(f);box.appendChild(c)});
-    document.getElementById('count').textContent=l.length+' project'+(l.length===1?'':'s');document.getElementById('empty').hidden=!!l.length}
-  if(q)q.addEventListener('input',render);document.getElementById('sort').onchange=render;
-  document.getElementById('reset').onclick=function(){if(q)q.value='';sel={dep:{},typ:{},st:{}};document.querySelectorAll('.side input').forEach(function(i){i.checked=false});render()};
-  render();
-}).catch(function(e){var er=document.getElementById('error');er.hidden=false;er.textContent='Could not load the project list from data.json ('+e.message+'). This page reads its projects from the projects array in data.json; run a local web server (for example, python3 -m http.server) and open the page through http://localhost, not as a file.'});
-</script></body></html>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Project Bank | ORION Scholar</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body data-page="projects">
+    <div id="top"></div>
+    <script src="site.js?v=20261023-1"></script>
+    <!-- Project search, filters, and rendered project cards. -->
+    <main class="wrap">
+      <div class="bar">
+        <h1 id="title">Our Research Projects</h1>
+        <span class="count" id="count"></span>
+        <select id="sort" aria-label="Sort by">
+          <option value="upd">Sort: Recently updated</option>
+          <option value="title">Sort: Title</option>
+          <option value="seats">Sort: Seats available</option>
+        </select>
+      </div>
+      <div class="pbank">
+        <aside class="card side" aria-label="Filters">
+          <fieldset id="f-dep"><h3>Department</h3></fieldset>
+          <fieldset id="f-typ"><h3>Project type</h3></fieldset>
+          <fieldset id="f-st"><h3>Status</h3></fieldset>
+          <button class="reset" id="reset" type="button">
+            Clear all filters
+          </button>
+        </aside>
+        <div>
+          <div id="list"></div>
+          <div class="card empty" id="empty" hidden>
+            No projects match your filters.
+          </div>
+          <div class="card error" id="error" hidden></div>
+        </div>
+      </div>
+    </main>
+    <script>
+      // Build project filters and cards from the shared project data.
+      loadData()
+        .then(function (D) {
+          var all = D.projects,
+            cs = D.collaborators,
+            q = document.getElementById("q"),
+            sel = { dep: {}, typ: {}, st: {} };
+          document.getElementById("title").textContent = D.projects_title;
+          q.value = new URLSearchParams(location.search).get("q") || "";
+          function active(o) {
+            return Object.keys(o).filter(function (k) {
+              return o[k];
+            });
+          }
+          // Count available values, then create a checkbox for each one.
+          function build(id, key, field) {
+            var fs = document.getElementById(id),
+              n = {};
+            all.forEach(function (p) {
+              n[p[field] || "Other"] = (n[p[field] || "Other"] || 0) + 1;
+            });
+            Object.keys(n)
+              .sort()
+              .forEach(function (v) {
+                var l = el("label"),
+                  cb = el("input");
+                cb.type = "checkbox";
+                cb.onchange = function () {
+                  sel[key][v] = cb.checked;
+                  render();
+                };
+                l.appendChild(cb);
+                l.appendChild(el("span", "", v));
+                l.appendChild(el("span", "n", n[v]));
+                fs.appendChild(l);
+              });
+          }
+          build("f-dep", "dep", "department");
+          build("f-typ", "typ", "project_type");
+          build("f-st", "st", "status");
+          // Filter and sort projects before rebuilding the list.
+          function render() {
+            var t = (q ? q.value : "").trim().toLowerCase(),
+              d = active(sel.dep),
+              ty = active(sel.typ),
+              s = active(sel.st);
+            var l = all.filter(function (p) {
+              var h = [
+                p.title,
+                p.description,
+                p.instructor,
+                p.department,
+                p.prerequisites,
+              ]
+                .concat(p.tags || [])
+                .join(" ")
+                .toLowerCase();
+              return (
+                (!t || h.indexOf(t) > -1) &&
+                (!d.length || d.indexOf(p.department) > -1) &&
+                (!ty.length || ty.indexOf(p.project_type) > -1) &&
+                (!s.length || s.indexOf(p.status) > -1)
+              );
+            });
+            var o = document.getElementById("sort").value;
+            l.sort(function (a, b) {
+              return o === "title"
+                ? a.title.localeCompare(b.title)
+                : o === "seats"
+                  ? b.seats - a.seats
+                  : b.updated.localeCompare(a.updated);
+            });
+            var box = document.getElementById("list");
+            box.textContent = "";
+            l.forEach(function (p) {
+              var c = el("article", "card pc");
+              c.appendChild(el("h2", "", p.title));
+              var m = el("div", "meta");
+              m.appendChild(el("span", "st " + p.status, p.status));
+              m.appendChild(el("span", "", p.department));
+              m.appendChild(el("span", "", p.project_type));
+              m.appendChild(el("span", "", p.semester));
+              c.appendChild(m);
+              c.appendChild(el("p", "", p.description));
+              var dl = el("dl");
+              dl.appendChild(el("dt", "", "Instructor"));
+              var dd = el("dd");
+              var lead =
+                p.lead_id &&
+                cs.filter(function (x) {
+                  return x.id === p.lead_id;
+                })[0];
+              if (lead && lead.portfolio_url) {
+                var a = el("a", "", p.instructor);
+                a.href = lead.portfolio_url;
+                dd.appendChild(a);
+              } else dd.textContent = p.instructor;
+              dl.appendChild(dd);
+              dl.appendChild(el("dt", "", "Prerequisites"));
+              dl.appendChild(el("dd", "", p.prerequisites || "None"));
+              var tg = el("dd");
+              p.tags.forEach(function (x) {
+                tg.appendChild(el("span", "chip", x));
+                tg.appendChild(document.createTextNode(" "));
+              });
+              dl.appendChild(el("dt", "", "Topics"));
+              dl.appendChild(tg);
+              c.appendChild(dl);
+              var f = el("div", "foot");
+              var b = el(
+                "button",
+                "btn p",
+                p.status === "Closed" ? "Closed" : "Apply",
+              );
+              b.type = "button";
+              if (p.status === "Closed") b.disabled = true;
+              else
+                b.onclick = function () {
+                  b.textContent = "Applied";
+                  b.disabled = true;
+                };
+              f.appendChild(b);
+              f.appendChild(
+                el(
+                  "span",
+                  "",
+                  (p.seats > 0
+                    ? p.seats + " seat" + (p.seats === 1 ? "" : "s") + " left"
+                    : "No seats left") +
+                    " · Updated " +
+                    fmtDate(p.updated),
+                ),
+              );
+              c.appendChild(f);
+              box.appendChild(c);
+            });
+            document.getElementById("count").textContent =
+              l.length + " project" + (l.length === 1 ? "" : "s");
+            document.getElementById("empty").hidden = !!l.length;
+          }
+          if (q) q.addEventListener("input", render);
+          document.getElementById("sort").onchange = render;
+          document.getElementById("reset").onclick = function () {
+            if (q) q.value = "";
+            sel = { dep: {}, typ: {}, st: {} };
+            document.querySelectorAll(".side input").forEach(function (i) {
+              i.checked = false;
+            });
+            render();
+          };
+          render();
+        })
+        .catch(function (e) {
+          var er = document.getElementById("error");
+          er.hidden = false;
+          er.textContent =
+            "Could not load the project list from data.json (" +
+            e.message +
+            "). This page reads its projects from the projects array in data.json; run a local web server (for example, python3 -m http.server) and open the page through http://localhost, not as a file.";
+        });
+    </script>
+  </body>
+</html>

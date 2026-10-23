@@ -1,0 +1,375 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Research Profile</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="style.css" />
+    <style>
+      :root {
+        --white: #fff;
+        --black: #000;
+        --blue: #0a4fd6;
+        --line: #c9d6f5;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: var(--white);
+        color: var(--black);
+        font:
+          15px/1.5 Arial,
+          "Helvetica Neue",
+          system-ui,
+          sans-serif;
+        border-top: 0;
+      }
+      a {
+        color: var(--blue);
+        text-decoration: none;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+      a:focus-visible,
+      button:focus-visible {
+        outline: 3px solid var(--blue);
+        outline-offset: 2px;
+      }
+      .profile-wrap {
+        max-width: 860px;
+        margin: 0 auto;
+        padding: 20px 20px 48px;
+      }
+      .back {
+        font-size: 14px;
+        display: inline-block;
+        margin-bottom: 16px;
+      }
+
+      .head {
+        display: flex;
+        gap: 20px;
+        align-items: flex-start;
+      }
+      .photo {
+        flex: none;
+        width: 112px;
+        height: 112px;
+        border-radius: 50%;
+        background: var(--blue);
+        color: var(--white);
+        display: grid;
+        place-items: center;
+        font-size: 34px;
+        font-weight: 700;
+      }
+      h1 {
+        margin: 0 0 2px;
+        font-size: 26px;
+      }
+      .head p {
+        margin: 0 0 2px;
+      }
+      .muted {
+        color: #555;
+      }
+      .tags {
+        margin-top: 8px !important;
+      }
+      .tags a {
+        margin-right: 14px;
+        font-size: 14px;
+      }
+
+      .tabs {
+        display: flex;
+        gap: 4px;
+        margin-top: 28px;
+        border-bottom: 1px solid var(--black);
+        overflow-x: auto;
+      }
+      .tabs button {
+        font: inherit;
+        background: none;
+        border: 0;
+        cursor: pointer;
+        padding: 10px 16px;
+        color: var(--blue);
+        border-bottom: 3px solid transparent;
+        margin-bottom: -1px;
+        white-space: nowrap;
+      }
+      .tabs button:hover {
+        background: #eef3ff;
+      }
+      .tabs button[aria-selected="true"] {
+        color: var(--black);
+        font-weight: 700;
+        border-bottom-color: var(--blue);
+      }
+
+      .panel {
+        padding-top: 16px;
+      }
+      .row {
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 12px 0;
+        border-bottom: 1px solid var(--line);
+      }
+      .row .title {
+        display: block;
+        font-size: 15px;
+      }
+      .row .sub {
+        display: block;
+        font-size: 13px;
+        color: #333;
+      }
+      .row .date {
+        white-space: nowrap;
+        font-size: 14px;
+      }
+      .empty {
+        color: #555;
+        padding: 12px 0;
+      }
+      @media (max-width: 720px) {
+        .head {
+          flex-direction: column;
+        }
+      }
+    </style>
+  </head>
+  <body data-page="profile">
+    <div id="top"></div>
+    <script src="site.js?v=20261023-1"></script>
+    <div class="profile-wrap">
+      <a class="back" href="index.html">&larr; Back to directory</a>
+      <header class="head" id="header"></header>
+      <nav
+        class="tabs"
+        id="tabs"
+        role="tablist"
+        aria-label="Profile sections"
+      ></nav>
+      <div id="panels"></div>
+    </div>
+
+    <script>
+      /* ============================================================
+   HOW THIS PAGE WORKS (read this once, you don't need to edit it)
+   1. The link looks like  portfolio.html?id=navya-mulay
+   2. We read the part after "id=" -> "navya-mulay"
+   3. We load shared site data and match the id to the profile path or researcher id
+   4. We build the page from that person's details
+   To add or change a person, edit data.json, NOT this file.
+   ============================================================ */
+
+      // Small helper: make an HTML element, optionally with a class and text.
+      // Using textContent (not innerHTML) keeps the page safe from stray HTML.
+      function make(tag, className, text) {
+        var e = document.createElement(tag);
+        if (className) e.className = className;
+        if (text !== undefined) e.textContent = text;
+        return e;
+      }
+
+      // Step 2: read the id from the link.
+      var id = new URLSearchParams(window.location.search).get("id");
+
+      // Load shared data, then find the profile identified by the URL query.
+      loadData()
+        .then(function (data) {
+          var person = data.collaborators.find(function (c) {
+            var slug = (c.portfolio_path || "")
+              .split("/")
+              .filter(Boolean)
+              .pop();
+            return slug === id || c.id === id;
+          });
+          if (!person) {
+            showNotFound();
+            return;
+          }
+          build(person, data);
+        })
+        .catch(function () {
+          showNotFound();
+        });
+
+      // Show a clear fallback if the id is missing or data could not load.
+      function showNotFound() {
+        document.title = "Profile not found";
+        document
+          .getElementById("header")
+          .appendChild(make("h1", "", "Profile not found"));
+        document
+          .getElementById("panels")
+          .appendChild(
+            make(
+              "p",
+              "empty",
+              "We could not find that researcher. Go back to the directory and try again.",
+            ),
+          );
+      }
+
+      // Step 4: build the whole page.
+      // Build the profile header, available tabs, and their content panels.
+      function build(c, data) {
+        var extra = c.portfolio || {}; // optional hand-written extras (milestones etc.)
+        document.title = c.name + " \u2013 Research Profile";
+
+        // ---- Header ----
+        var header = document.getElementById("header");
+        var initials = c.name
+          .replace("Prof. ", "")
+          .replace("Dr. ", "")
+          .split(" ")
+          .map(function (w) {
+            return w[0];
+          })
+          .slice(0, 2)
+          .join("");
+        header.appendChild(make("div", "photo", initials));
+
+        var info = make("div");
+        info.appendChild(make("h1", "", c.name));
+        info.appendChild(make("p", "", c.role + ", " + c.affiliation));
+        if (c.projects && c.projects.length)
+          info.appendChild(make("p", "muted", c.projects.join(" \u00b7 ")));
+        if (c.department)
+          info.appendChild(
+            make("p", "", c.department + (c.location ? ", " + c.location : "")),
+          );
+        if (c.email)
+          info.appendChild(
+            make("p", "", "Verified email at " + c.email.split("@")[1]),
+          );
+        var tagBox = make("p", "tags");
+        (extra.tags || c.interests || []).forEach(function (t) {
+          tagBox.appendChild(make("a", "", t));
+        });
+        info.appendChild(tagBox);
+        header.appendChild(info);
+
+        // ---- Tabs: only sections that have content get a tab ----
+        var sections = [];
+
+        if (extra.milestones) {
+          sections.push({ name: "Milestones", items: extra.milestones });
+        }
+
+        // Projects: hand-written ones, or else the Project Bank projects this person leads.
+        var projectItems =
+          extra.projects ||
+          data.projects
+            .filter(function (p) {
+              return p.lead_id === c.id;
+            })
+            .map(function (p) {
+              return {
+                title: p.title,
+                text:
+                  p.project_type +
+                  " \u00b7 " +
+                  p.status +
+                  " \u00b7 updated " +
+                  p.updated,
+              };
+            });
+        if (projectItems.length)
+          sections.push({ name: "Projects", items: projectItems });
+
+        if (extra.supervisor_id) {
+          var sup = data.collaborators.find(function (x) {
+            return x.id === extra.supervisor_id;
+          });
+          if (sup)
+            sections.push({
+              name: "Supervisor",
+              items: [
+                {
+                  title: sup.name,
+                  text:
+                    sup.role +
+                    " \u00b7 " +
+                    sup.department +
+                    " \u00b7 " +
+                    sup.email,
+                  link: sup.portfolio_url,
+                },
+              ],
+            });
+        }
+
+        if (extra.achievements) {
+          sections.push({ name: "Achievements", items: extra.achievements });
+        } else if (c.publications_list && c.publications_list.length) {
+          sections.push({
+            name: "Publications",
+            items: c.publications_list.map(function (p) {
+              return { title: p.title, text: p.venue, date: String(p.year) };
+            }),
+          });
+        }
+
+        // Everyone gets a link back to the directory entry at the end.
+        var tabsBox = document.getElementById("tabs");
+        var panelsBox = document.getElementById("panels");
+
+        sections.forEach(function (s, i) {
+          var btn = make("button", "", s.name);
+          btn.setAttribute("role", "tab");
+          btn.setAttribute("aria-selected", i === 0 ? "true" : "false");
+          tabsBox.appendChild(btn);
+
+          var panel = make("section", "panel");
+          panel.hidden = i !== 0;
+          s.items.forEach(function (it) {
+            var row = make("div", "row");
+            var left = make("div");
+            if (it.link) {
+              var a = make("a", "title", it.title);
+              a.href = it.link;
+              left.appendChild(a);
+            } else {
+              left.appendChild(make("span", "title", it.title));
+            }
+            if (it.text) left.appendChild(make("span", "sub", it.text));
+            row.appendChild(left);
+            if (it.date) row.appendChild(make("span", "date", it.date));
+            panel.appendChild(row);
+          });
+          panelsBox.appendChild(panel);
+
+          // Clicking a tab: select it, show its panel, hide the others.
+          btn.addEventListener("click", function () {
+            Array.prototype.forEach.call(tabsBox.children, function (b) {
+              b.setAttribute("aria-selected", b === btn ? "true" : "false");
+            });
+            Array.prototype.forEach.call(panelsBox.children, function (p) {
+              p.hidden = p !== panel;
+            });
+          });
+        });
+
+        if (!sections.length)
+          panelsBox.appendChild(
+            make(
+              "p",
+              "empty",
+              "No details have been added to this profile yet.",
+            ),
+          );
+      }
+    </script>
+  </body>
+</html>

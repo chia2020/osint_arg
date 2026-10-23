@@ -1,126 +1,393 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Research Directory | ORION Research Systems</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
-</head>
-<body data-page="directory">
-<div id="top"></div>
-<script src="site.js"></script>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Research Directory | ORION Research Systems</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body data-page="directory">
+    <div id="top"></div>
+    <script src="site.js?v=20261023-1"></script>
 
-<div class="page">
-  <aside class="card side" aria-label="Filters">
-    <fieldset id="f-aff"><h3>Affiliation</h3></fieldset>
-    <fieldset id="f-proj"><h3>Research</h3></fieldset>
-    <button class="reset" id="reset" type="button">Clear all filters</button>
-  </aside>
+    <!-- Directory filters, researcher results, and summary sidebars. -->
+    <div class="page">
+      <aside class="card side" aria-label="Filters">
+        <fieldset id="f-aff"><h3>Affiliation</h3></fieldset>
+        <fieldset id="f-proj"><h3>Research</h3></fieldset>
+        <button class="reset" id="reset" type="button">
+          Clear all filters
+        </button>
+      </aside>
 
-  <main>
-    <div class="tiles" id="tiles"></div>
-    <div class="bar"><h1>Researchers</h1><span class="count" id="count" aria-live="polite"></span>
-      <select id="sort" aria-label="Sort by"><option value="rel">Sort: Relevance</option><option value="name">Sort: Name</option><option value="cit">Sort: Citations</option></select></div>
-    <ul class="res" id="people"></ul>
-    <div class="card empty" id="empty" hidden>No researchers match. Try a project name, a role, or part of a handle.</div>
-    <div class="card error" id="error" hidden></div>
-  </main>
+      <main>
+        <div class="tiles" id="tiles"></div>
+        <div class="bar">
+          <h1>Researchers</h1>
+          <span class="count" id="count" aria-live="polite"></span>
+          <select id="sort" aria-label="Sort by">
+            <option value="rel">Sort: Relevance</option>
+            <option value="name">Sort: Name</option>
+            <option value="cit">Sort: Citations</option>
+          </select>
+        </div>
+        <ul class="res" id="people"></ul>
+        <div class="card empty" id="empty" hidden>
+          No researchers match. Try a project name, a role, or part of a handle.
+        </div>
+        <div class="card error" id="error" hidden></div>
+      </main>
 
-  <div><aside class="card rail" aria-label="Shared review accounts">
-    <h3>Shared review accounts</h3>
-    <p class="hint">Accounts used by a team rather than one person. Handles are listed here, not on individual profiles unless a member holds access.</p>
-    <div id="handles"></div>
-    </aside>
-    <aside class="card rail" aria-label="Active projects"><h3><span class="live"></span>Active projects</h3><div id="projects"></div></aside>
-  </div>
-</div>
-<footer><span id="updated"></span> Directory entries are maintained by project coordinators.</footer>
+      <div>
+        <aside class="card rail" aria-label="Shared review accounts">
+          <h3>Shared review accounts</h3>
+          <p class="hint">
+            Accounts used by a team rather than one person. Handles are listed
+            here, not on individual profiles unless a member holds access.
+          </p>
+          <div id="handles"></div>
+        </aside>
+        <aside class="card rail" aria-label="Active projects">
+          <h3><span class="live"></span>Active projects</h3>
+          <div id="projects"></div>
+        </aside>
+      </div>
+    </div>
+    <footer>
+      <span id="updated"></span> Directory entries are maintained by project
+      coordinators.
+    </footer>
 
-<script>
-(function(){
-  var data,q=document.getElementById('q'),sel={aff:{},proj:{}};
-  var colors=['#0b8f86','#1a73c8','#8e44ad','#c0572b','#3d7a3d','#5d6d7e'];
-  function el(t,c,x){var e=document.createElement(t);if(c)e.className=c;if(x!==undefined)e.textContent=x;return e}
-  function ini(n){return n.replace(/^Prof\.\s*/,'').split(' ').map(function(p){return p[0]}).slice(0,2).join('')}
-  function hay(c){return [c.name,c.role,c.affiliation,c.email,c.bio,c.orion_id,c.location].concat(c.projects,c.handles,c.interests).join(' ').toLowerCase()}
-  function hhay(h){return [h.handle,h.label,h.owner_team,h.scope,h.status].join(' ').toLowerCase()}
-  function active(o){return Object.keys(o).filter(function(k){return o[k]})}
+    <script>
+      // Directory state and small helpers used to filter and build result cards.
+      (function () {
+        var data,
+          q = document.getElementById("q"),
+          sel = { aff: {}, proj: {} };
+        var colors = [
+          "#0b8f86",
+          "#1a73c8",
+          "#8e44ad",
+          "#c0572b",
+          "#3d7a3d",
+          "#5d6d7e",
+        ];
+        function el(t, c, x) {
+          var e = document.createElement(t);
+          if (c) e.className = c;
+          if (x !== undefined) e.textContent = x;
+          return e;
+        }
+        function ini(n) {
+          return n
+            .replace(/^Prof\.\s*/, "")
+            .split(" ")
+            .map(function (p) {
+              return p[0];
+            })
+            .slice(0, 2)
+            .join("");
+        }
+        function hay(c) {
+          return [
+            c.name,
+            c.role,
+            c.affiliation,
+            c.email,
+            c.bio,
+            c.orion_id,
+            c.location,
+          ]
+            .concat(c.projects, c.handles, c.interests)
+            .join(" ")
+            .toLowerCase();
+        }
+        function hhay(h) {
+          return [h.handle, h.label, h.owner_team, h.scope, h.status]
+            .join(" ")
+            .toLowerCase();
+        }
+        function active(o) {
+          return Object.keys(o).filter(function (k) {
+            return o[k];
+          });
+        }
 
-  function buildFilter(id,key,items,field){
-    var fs=document.getElementById(id),counts={};
-    data.collaborators.forEach(function(c){[].concat(c[field]).forEach(function(v){counts[v]=(counts[v]||0)+1})});
-    Object.keys(counts).forEach(function(v){
-      var l=el('label'),cb=el('input');cb.type='checkbox';
-      cb.onchange=function(){sel[key][v]=cb.checked;render()};
-      l.appendChild(cb);l.appendChild(el('span','',v));l.appendChild(el('span','n',counts[v]));fs.appendChild(l);
-    });
-  }
+        // Build one checkbox group and update the selected-filter state.
+        function buildFilter(id, key, field) {
+          var fs = document.getElementById(id),
+            counts = {};
+          data.collaborators.forEach(function (c) {
+            [].concat(c[field]).forEach(function (v) {
+              counts[v] = (counts[v] || 0) + 1;
+            });
+          });
+          Object.keys(counts).forEach(function (v) {
+            var l = el("label"),
+              cb = el("input");
+            cb.type = "checkbox";
+            cb.onchange = function () {
+              sel[key][v] = cb.checked;
+              render();
+            };
+            l.appendChild(cb);
+            l.appendChild(el("span", "", v));
+            l.appendChild(el("span", "n", counts[v]));
+            fs.appendChild(l);
+          });
+        }
 
-  function render(){
-    var term=q.value.trim().toLowerCase(),aff=active(sel.aff),pr=active(sel.proj);
-    var list=data.collaborators.filter(function(c){
-      return (!term||hay(c).indexOf(term)>-1)&&(!aff.length||aff.indexOf(c.affiliation)>-1)&&(!pr.length||c.projects.some(function(p){return pr.indexOf(p)>-1}));
-    });
-    var s=document.getElementById('sort').value;
-    if(s==='name')list.sort(function(a,b){return a.name.localeCompare(b.name)});
-    if(s==='cit')list.sort(function(a,b){return b.citations-a.citations});
-    var ul=document.getElementById('people');ul.textContent='';
-    list.forEach(function(c,i){
-      var li=el('li','card person');
-      var av=el('div','av',ini(c.name));av.style.background=colors[data.collaborators.indexOf(c)%colors.length];li.appendChild(av);
-      var b=el('div','pb');
-      var h=el('h2');var a=el('a','',c.name);a.href=c.portfolio_url||('#'+c.id);if(c.portfolio_url){a.target='_blank';a.rel='noopener'}h.appendChild(a);if(c.verified){var vt=document.createElementNS('http://www.w3.org/2000/svg','svg');vt.setAttribute('viewBox','0 0 24 24');vt.setAttribute('class','vt');vt.innerHTML='<title>Verified affiliation</title><path d="M12 1l3 2.2 3.7-.3 1.2 3.5 3.1 2.1-1 3.6 1 3.6-3.1 2.1-1.2 3.5-3.7-.3L12 23l-3-2.2-3.7.3-1.2-3.5L1 15.5l1-3.6-1-3.6 3.1-2.1 1.2-3.5 3.7.3z"/><path d="M8 12l3 3 5-6" fill="none" stroke="#fff" stroke-width="2"/>';h.appendChild(vt)}b.appendChild(h);
-      b.appendChild(el('div','sub',c.role+' · '+c.affiliation));
-      b.appendChild(el('div','sub',(c.department?c.department+' · ':'')+c.location));
-      var id=el('div','id');id.appendChild(el('b','','iD '));id.appendChild(document.createTextNode(c.orion_id+' · Joined '+c.joined));b.appendChild(id);
-      b.appendChild(el('p','',c.bio));
-      var ch=el('div','int');
-      c.interests.forEach(function(x){ch.appendChild(el('span','chip',x))});
-      c.handles.forEach(function(x){var t=el('button','chip h',x);t.type='button';t.title='Show this account';t.onclick=function(){q.value=x;render();window.scrollTo(0,0)};ch.appendChild(t)});
-      b.appendChild(ch);
-      var lp=c.publications_list[0];if(lp){var pb=el('div','pub');pb.appendChild(el('span','','Latest: '+lp.title));pb.appendChild(el('small','',lp.venue+', '+lp.year));b.appendChild(pb)}
-      var st=el('div','stats');
-      [['Publications',c.publications],['Citations',c.citations.toLocaleString('en-IN')],['h-index',c.h_index],['Followers',c.followers.toLocaleString('en-IN')]].forEach(function(r){var d=el('div','',r[0]);d.insertBefore(el('b','',r[1]),d.firstChild);st.appendChild(d)});
-      b.appendChild(st);if(c.recent_activity)b.appendChild(el('div','act-line',c.recent_activity));li.appendChild(b);
-      var act=el('div','act');
-      var f=el('button','btn p','Follow');f.type='button';f.onclick=function(){f.textContent=f.textContent==='Follow'?'Following':'Follow'};
-      var m=el('a','btn','Message');m.href='mailto:'+c.email;m.style.cssText='display:grid;place-items:center';
-      act.appendChild(f);act.appendChild(m);if(c.portfolio_url){var po=el('a','btn o','Portfolio');po.href=c.portfolio_url;po.target='_blank';po.rel='noopener';act.appendChild(po)}li.appendChild(act);ul.appendChild(li);
-    });
-    var hs=data.shared_handles.filter(function(h){return !term||hhay(h).indexOf(term)>-1});
-    var hw=document.getElementById('handles');hw.textContent='';
-    (hs.length?hs:data.shared_handles).forEach(function(h){
-      var box=el('div','acct'+(h.status==='Retired'?' ret':''));
-      box.appendChild(el('span','badge',h.status));box.appendChild(el('code','',h.handle));
-      var dl=el('dl');
-      [['Type',h.label],['Owner',h.owner_team],['Registered',h.registered],['Scope',h.scope],['Usage',h.usage]].forEach(function(r){dl.appendChild(el('dt','',r[0]));dl.appendChild(el('dd','',r[1]))});
-      box.appendChild(dl);hw.appendChild(box);
-    });
-    var tl=document.getElementById('tiles');if(!tl.firstChild){[[data.collaborators.length,'Researchers'],[data.active_projects.length,'Active projects'],[data.collaborators.reduce(function(a,c){return a+c.publications},0),'Publications']].forEach(function(r){var t=el('div','card tile');t.appendChild(el('b','',r[0]));t.appendChild(el('span','',r[1]));tl.appendChild(t)})}
-    var pj=document.getElementById('projects');if(!pj.firstChild)data.active_projects.forEach(function(p){var x=el('div','prj');x.appendChild(el('b','',p.name));x.appendChild(el('div','',p.description+' '+p.members+' member'+(p.members===1?'':'s')));pj.appendChild(x)});
-    document.getElementById('count').textContent=list.length+' result'+(list.length===1?'':'s');
-    document.getElementById('empty').hidden=!!list.length;
-  }
+        // Apply the search and filters, then replace the visible result cards.
+        function render() {
+          var term = q.value.trim().toLowerCase(),
+            aff = active(sel.aff),
+            pr = active(sel.proj);
+          var list = data.collaborators.filter(function (c) {
+            return (
+              (!term || hay(c).indexOf(term) > -1) &&
+              (!aff.length || aff.indexOf(c.affiliation) > -1) &&
+              (!pr.length ||
+                c.projects.some(function (p) {
+                  return pr.indexOf(p) > -1;
+                }))
+            );
+          });
+          var s = document.getElementById("sort").value;
+          if (s === "name")
+            list.sort(function (a, b) {
+              return a.name.localeCompare(b.name);
+            });
+          if (s === "cit")
+            list.sort(function (a, b) {
+              return b.citations - a.citations;
+            });
+          var ul = document.getElementById("people");
+          ul.textContent = "";
+          list.forEach(function (c, i) {
+            var li = el("li", "card person");
+            var av = el("div", "av", ini(c.name));
+            av.style.background =
+              colors[data.collaborators.indexOf(c) % colors.length];
+            li.appendChild(av);
+            var b = el("div", "pb");
+            var h = el("h2");
+            var a = el("a", "", c.name);
+            a.href = c.portfolio_url || "#" + c.id;
+            h.appendChild(a);
+            if (c.verified) {
+              var vt = document.createElementNS(
+                "http://www.w3.org/2000/svg",
+                "svg",
+              );
+              vt.setAttribute("viewBox", "0 0 24 24");
+              vt.setAttribute("class", "vt");
+              vt.innerHTML =
+                '<title>Verified affiliation</title><path d="M12 1l3 2.2 3.7-.3 1.2 3.5 3.1 2.1-1 3.6 1 3.6-3.1 2.1-1.2 3.5-3.7-.3L12 23l-3-2.2-3.7.3-1.2-3.5L1 15.5l1-3.6-1-3.6 3.1-2.1 1.2-3.5 3.7.3z"/><path d="M8 12l3 3 5-6" fill="none" stroke="#fff" stroke-width="2"/>';
+              h.appendChild(vt);
+            }
+            b.appendChild(h);
+            b.appendChild(el("div", "sub", c.role + " · " + c.affiliation));
+            b.appendChild(
+              el(
+                "div",
+                "sub",
+                (c.department ? c.department + " · " : "") + c.location,
+              ),
+            );
+            var id = el("div", "id");
+            id.appendChild(el("b", "", "iD "));
+            id.appendChild(
+              document.createTextNode(c.orion_id + " · Joined " + c.joined),
+            );
+            b.appendChild(id);
+            b.appendChild(el("p", "", c.bio));
+            var ch = el("div", "int");
+            c.interests.forEach(function (x) {
+              ch.appendChild(el("span", "chip", x));
+            });
+            c.handles.forEach(function (x) {
+              var t = el("button", "chip h", x);
+              t.type = "button";
+              t.title = "Show this account";
+              t.onclick = function () {
+                q.value = x;
+                render();
+                window.scrollTo(0, 0);
+              };
+              ch.appendChild(t);
+            });
+            b.appendChild(ch);
+            var lp = c.publications_list[0];
+            if (lp) {
+              var pb = el("div", "pub");
+              pb.appendChild(el("span", "", "Latest: " + lp.title));
+              pb.appendChild(el("small", "", lp.venue + ", " + lp.year));
+              b.appendChild(pb);
+            }
+            var st = el("div", "stats");
+            [
+              ["Publications", c.publications],
+              ["Citations", c.citations.toLocaleString("en-IN")],
+              ["h-index", c.h_index],
+              ["Followers", c.followers.toLocaleString("en-IN")],
+            ].forEach(function (r) {
+              var d = el("div", "", r[0]);
+              d.insertBefore(el("b", "", r[1]), d.firstChild);
+              st.appendChild(d);
+            });
+            b.appendChild(st);
+            if (c.recent_activity)
+              b.appendChild(el("div", "act-line", c.recent_activity));
+            li.appendChild(b);
+            var act = el("div", "act");
+            var f = el("button", "btn p", "Follow");
+            f.type = "button";
+            f.onclick = function () {
+              f.textContent =
+                f.textContent === "Follow" ? "Following" : "Follow";
+            };
+            var m = el("a", "btn", "Message");
+            m.href = "mailto:" + c.email;
+            m.style.cssText = "display:grid;place-items:center";
+            act.appendChild(f);
+            act.appendChild(m);
+            if (c.portfolio_url) {
+              var po = el("a", "btn o", "Portfolio");
+              po.href = c.portfolio_url;
+              act.appendChild(po);
+            }
+            li.appendChild(act);
+            ul.appendChild(li);
+          });
+          var hs = data.shared_handles.filter(function (h) {
+            return !term || hhay(h).indexOf(term) > -1;
+          });
+          var hw = document.getElementById("handles");
+          hw.textContent = "";
+          (hs.length ? hs : data.shared_handles).forEach(function (h) {
+            var box = el(
+              "div",
+              "acct" + (h.status === "Retired" ? " ret" : ""),
+            );
+            box.appendChild(el("span", "badge", h.status));
+            box.appendChild(el("code", "", h.handle));
+            var dl = el("dl");
+            [
+              ["Type", h.label],
+              ["Owner", h.owner_team],
+              ["Registered", h.registered],
+              ["Scope", h.scope],
+              ["Usage", h.usage],
+            ].forEach(function (r) {
+              dl.appendChild(el("dt", "", r[0]));
+              dl.appendChild(el("dd", "", r[1]));
+            });
+            box.appendChild(dl);
+            hw.appendChild(box);
+          });
+          var tl = document.getElementById("tiles");
+          if (!tl.firstChild) {
+            [
+              [data.collaborators.length, "Researchers"],
+              [data.active_projects.length, "Active projects"],
+              [
+                data.collaborators.reduce(function (a, c) {
+                  return a + c.publications;
+                }, 0),
+                "Publications",
+              ],
+            ].forEach(function (r) {
+              var t = el("div", "card tile");
+              t.appendChild(el("b", "", r[0]));
+              t.appendChild(el("span", "", r[1]));
+              tl.appendChild(t);
+            });
+          }
+          var pj = document.getElementById("projects");
+          if (!pj.firstChild)
+            data.active_projects.forEach(function (p) {
+              var x = el("div", "prj");
+              x.appendChild(el("b", "", p.name));
+              x.appendChild(
+                el(
+                  "div",
+                  "",
+                  p.description +
+                    " " +
+                    p.members +
+                    " member" +
+                    (p.members === 1 ? "" : "s"),
+                ),
+              );
+              pj.appendChild(x);
+            });
+          document.getElementById("count").textContent =
+            list.length + " result" + (list.length === 1 ? "" : "s");
+          document.getElementById("empty").hidden = !!list.length;
+        }
 
-  loadData().then(function(d){
-    data=d;
-    data.collaborators.forEach(function(c){c.interests=c.interests||[];c.handles=c.handles||[];c.projects=c.projects||[];c.publications=c.publications||0;c.citations=c.citations||0;c.h_index=c.h_index||0;c.orion_id=c.orion_id||'n/a';c.location=c.location||'';c.joined=c.joined||'';c.bio=c.bio||'';c.email=c.email||'';c.department=c.department||'';c.portfolio_url=c.portfolio_url||'';c.followers=c.followers||0;c.following=c.following||0;c.publications_list=c.publications_list||[];c.recent_activity=c.recent_activity||''});
-    data.active_projects=data.active_projects||[];
-    data.shared_handles=data.shared_handles||[];
-    document.getElementById('updated').textContent='Last updated '+d.directory.last_updated+'.';
-    buildFilter('f-aff','aff',null,'affiliation');buildFilter('f-proj','proj',null,'projects');
-    q.value=new URLSearchParams(location.search).get('q')||'';
-    q.addEventListener('input',render);document.getElementById('sort').onchange=render;
-    document.getElementById('reset').onclick=function(){q.value='';sel={aff:{},proj:{}};document.querySelectorAll('.side input').forEach(function(i){i.checked=false});render()};
-    render();
-  }).catch(function(e){
-    var er=document.getElementById('error');er.hidden=false;
-    er.textContent=(data?'data.json loaded but the page could not display it (':'Could not load data.json (')+e.message+'). '+(data?'Check that data.json is the latest version.':'Serve this folder over HTTP (for example, python3 -m http.server) instead of opening the file directly.');
-  });
-})();
-</script>
-</body>
+        // Normalize optional fields before rendering the directory.
+        loadData()
+          .then(function (d) {
+            data = d;
+            data.collaborators.forEach(function (c) {
+              c.interests = c.interests || [];
+              c.handles = c.handles || [];
+              c.projects = c.projects || [];
+              c.publications = c.publications || 0;
+              c.citations = c.citations || 0;
+              c.h_index = c.h_index || 0;
+              c.orion_id = c.orion_id || "n/a";
+              c.location = c.location || "";
+              c.joined = c.joined || "";
+              c.bio = c.bio || "";
+              c.email = c.email || "";
+              c.department = c.department || "";
+              c.portfolio_url = c.portfolio_url || "";
+              c.followers = c.followers || 0;
+              c.following = c.following || 0;
+              c.publications_list = c.publications_list || [];
+              c.recent_activity = c.recent_activity || "";
+            });
+            data.active_projects = data.active_projects || [];
+            data.shared_handles = data.shared_handles || [];
+            document.getElementById("updated").textContent =
+              "Last updated " + d.directory.last_updated + ".";
+            buildFilter("f-aff", "aff", "affiliation");
+            buildFilter("f-proj", "proj", "projects");
+            q.value = new URLSearchParams(location.search).get("q") || "";
+            q.addEventListener("input", render);
+            document.getElementById("sort").onchange = render;
+            document.getElementById("reset").onclick = function () {
+              q.value = "";
+              sel = { aff: {}, proj: {} };
+              document.querySelectorAll(".side input").forEach(function (i) {
+                i.checked = false;
+              });
+              render();
+            };
+            render();
+          })
+          .catch(function (e) {
+            var er = document.getElementById("error");
+            er.hidden = false;
+            er.textContent =
+              (data
+                ? "data.json loaded but the page could not display it ("
+                : "Could not load data.json (") +
+              e.message +
+              "). " +
+              (data
+                ? "Check that data.json is the latest version."
+                : "Serve this folder over HTTP (for example, python3 -m http.server) instead of opening the file directly.");
+          });
+      })();
+    </script>
+  </body>
 </html>
