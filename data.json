@@ -1,7 +1,7 @@
 {
   "site": {
     "portfolio_base": "https://portfolio.example",
-    "announcements_url": "#announcements-url-here"
+    "announcements_url": "announcements.html"
   },
   "directory": {
     "organization": "ORION Research Systems",

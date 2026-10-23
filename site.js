@@ -23,7 +23,7 @@
   {var d=new Date(iso+'T00:00:00');return d.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'})};
   var page=document.body.getAttribute('data-page')||'';
 
-  var nav=[['home','Home','home.html'],['directory','Directory','index.html'],['projects','Projects','projects.html'],['announcements','Announcements','#']];
+  var nav=[['home','Home','home.html'],['directory','Directory','index.html'],['projects','Projects','projects.html'],['announcements','Announcements','announcements.html']];
 
   var h='<header class="top"><div class="top-in"><a class="logo" href="home.html">ORION <span>Scholar</span></a>'+
    '<form class="gsearch" role="search"><svg viewBox="0 0 24 24"><circle cx="10" cy="10" r="7"/><path d="M21 21l-6-6"/></svg>'+

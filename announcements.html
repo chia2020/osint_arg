@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Announcements | ORION Research Systems</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+  /* Announcements-only rules. Scoped under .ann so they cannot clash with
+     .wrap, .banner, .meta or .side in the shared style.css.
+     They can be moved into style.css unchanged. */
+  .ann{max-width:1240px;margin:0 auto;padding:32px 20px 64px;display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:32px;align-items:start}
+  .ann h1{margin:0 0 4px;font-size:1.4rem;font-weight:700}
+  .ann .lede{margin:0 0 16px;color:var(--muted)}
+  .ann .ann-banner{padding:10px 16px;margin-bottom:20px;background:var(--amber-bg);border-color:#f0c77c;font-size:.9rem}
+  .ann .post{padding:24px 26px;margin-bottom:20px}
+  .ann .tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+  .ann .post h2{margin:0 0 4px;font-size:1.1rem;font-weight:500;line-height:1.35}
+  .ann .post-meta{margin:0 0 12px;color:var(--muted);font-size:.88rem}
+  .ann .post p{margin:0 0 10px}
+  .ann .post p:last-child{margin-bottom:0}
+  .ann .post code{font:.85rem ui-monospace,Menlo,monospace;background:#f1f3f5;padding:1px 5px;border-radius:4px}
+  .ann a code{color:var(--link)}
+  .ann .action{margin-top:14px;padding-top:12px;border-top:1px solid var(--line);color:var(--muted);font-size:.9rem}
+  .ann .action strong{color:var(--ink);font-weight:500}
+  .ann .rail dl{margin:0;font-size:.88rem}
+  .ann .rail dt{color:var(--muted)}
+  .ann .rail dd{margin:0 0 8px}
+  .ann .rail p{margin:0 0 8px;font-size:.88rem}
+  .ann .cats{list-style:none;margin:0;padding:0;font-size:.88rem}
+  .ann .cats li{display:flex;justify-content:space-between;padding:5px 0;border-top:1px solid var(--line)}
+  .ann .cats li:first-child{border-top:0}
+  .ann .cats span:last-child{color:var(--muted)}
+  @media (max-width:1060px){.ann{grid-template-columns:1fr;gap:24px}}
+  @media (max-width:560px){.ann .post{padding:20px}}
+</style>
+</head>
+<body data-page="announcements">
+<div id="top"></div>
+<script src="site.js"></script>
+
+<div class="ann">
+  <main>
+    <h1>Announcements</h1>
+    <p class="lede">Research and administration notices from ORION Research Systems.</p>
+    <div class="card ann-banner">
+      <strong>Archive.</strong> Posts are shown as originally published, newest first. All times are IST (UTC+05:30).
+    </div>
+
+    <!-- Newest first -->
+    <article class="card post" id="directory-refresh">
+      <div class="tags"><span class="chip">Directory</span><span class="chip">Administration</span></div>
+      <h2>Collaborator directory updated for the autumn 2026 cycle</h2>
+      <p class="post-meta">Posted by ORION Communications &middot; <time datetime="2026-10-06T09:15:00+05:30">6 Oct 2026, 09:15 IST</time></p>
+      <p>ORION Research Systems has updated the <a href="index.html">ORION collaborator directory</a> for the autumn 2026 cycle. The directory lists each partner, their project affiliations and the shared review handle designated for access requests on each project.</p>
+      <p>Affiliations for the MIRROR and Verification Program workstreams have been confirmed against ORION project rosters.</p>
+      <p class="action"><strong>Action requested:</strong> Partners should verify their entry and report any discrepancies to ORION Communications by replying to the directory update notice.</p>
+    </article>
+
+    <article class="card post" id="access-review">
+      <div class="tags"><span class="chip">Administration</span><span class="chip">Maintenance</span></div>
+      <h2>Quarterly access review and scheduled maintenance</h2>
+      <p class="post-meta">Posted by ORION Systems Administration &middot; <time datetime="2026-09-15T16:40:00+05:30">15 Sep 2026, 16:40 IST</time></p>
+      <p>ORION Systems Administration completed the quarterly access review for partner repositories on 14 September 2026. Routine credential rotation for shared review accounts was carried out as part of the review.</p>
+      <p><strong>Scheduled maintenance:</strong> Saturday 19 September 2026, 01:00 to 03:00 IST. Partner repository hosting and project notes services will be intermittently unavailable during this window. Partners are advised to save and synchronise their work in advance.</p>
+      <p class="action"><strong>Action required:</strong> None. Access enquiries should be directed to the ORION data governance desk.</p>
+    </article>
+
+    <article class="card post" id="new-collaborators">
+      <div class="tags"><span class="chip">Collaborators</span><span class="chip">MIRROR</span></div>
+      <h2>Autumn 2026 MIRROR collaborators announced</h2>
+      <p class="post-meta">Posted by ORION Communications &middot; <time datetime="2026-08-18T10:05:00+05:30">18 Aug 2026, 10:05 IST</time></p>
+      <p>ORION Research Systems is pleased to welcome the autumn 2026 cohort of partner collaborators to MIRROR, its survey data anonymization and research archive project.</p>
+      <p>Among the incoming collaborators from BITS Pilani is <a href="index.html?q=Navya%20Mulay" data-collab="c01">Navya Mulay</a> (Senior Researcher, Department of Computer Science and Information Systems), who joins MIRROR under the supervision of Prof. Archisman Joshi. Collaborators will contribute to the methodology, documentation and review workstreams.</p>
+      <p>Onboarding sessions will run through the end of August. Dashboard and repository access will be issued to each collaborator individually upon completion of onboarding.</p>
+    </article>
+
+    <article class="card post" id="review-access">
+      <div class="tags"><span class="chip">Verification Program</span><span class="chip">Administration</span></div>
+      <h2>Verification Program: first documentation review complete</h2>
+      <p class="post-meta">Posted by ORION Verification Program &middot; <time datetime="2026-08-06T11:20:00+05:30">6 Aug 2026, 11:20 IST</time></p>
+      <p>The ORION Verification Program has completed the first round of documentation review for partner repositories participating in the autumn 2026 cycle. Review comments from this round were authored by <a href="index.html?q=orion-review-17"><code>orion-review-17</code></a> on behalf of the Verification Program review group, and are labelled "Verification review" in each repository's history.</p>
+      <p>Partners are encouraged to read the comments on their repositories and respond where appropriate.</p>
+      <p class="action"><strong>Action requested:</strong> Respond to review comments by 20 August 2026. Questions about the review process should be directed to the ORION data governance desk.</p>
+    </article>
+  </main>
+
+  <div>
+    <aside class="card rail" aria-label="About this archive">
+      <h3>Archive summary</h3>
+      <dl>
+        <dt>Posts</dt><dd>4</dd>
+        <dt>Date range</dt><dd>6 Aug 2026 to 6 Oct 2026</dd>
+        <dt>Published by</dt><dd>ORION Research Systems</dd>
+        <dt>Time zone</dt><dd>IST (UTC+05:30)</dd>
+      </dl>
+    </aside>
+    <aside class="card rail" aria-label="Categories">
+      <h3>Categories</h3>
+      <ul class="cats">
+        <li><span>Administration</span><span>3</span></li>
+        <li><span>Collaborators</span><span>1</span></li>
+        <li><span>Directory</span><span>1</span></li>
+        <li><span>Maintenance</span><span>1</span></li>
+        <li><span>MIRROR</span><span>1</span></li>
+        <li><span>Verification Program</span><span>1</span></li>
+      </ul>
+    </aside>
+    <aside class="card rail" aria-label="Related pages">
+      <h3>Related pages</h3>
+      <p><a href="index.html">Collaborator directory</a></p>
+      <p><a href="projects.html">Project Bank</a></p>
+    </aside>
+  </div>
+</div>
+
+<footer>ORION Research Systems &middot; ORION Scholar &middot; Announcements archive</footer>
+
+<script>
+// Point the researcher link at the real portfolio URL. site.js builds
+// portfolio_url from site.portfolio_base + portfolio_path in data.json.
+// If data.json fails to load, the link keeps its directory-search fallback.
+loadData().then(function(d){
+  document.querySelectorAll('[data-collab]').forEach(function(a){
+    var c=d.collaborators.filter(function(x){return x.id===a.getAttribute('data-collab')})[0];
+    if(c&&c.portfolio_url){a.href=c.portfolio_url;a.target='_blank';a.rel='noopener'}
+  });
+}).catch(function(){});
+</script>
+</body>
+</html>
